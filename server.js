@@ -69,7 +69,7 @@ const str = read(join(__dirname, '/www/index.ejs'), 'utf8');
 const ejs = require("ejs");
 const compiled = ejs.compile(str)({ "link": initiateURL }); // inject the link into the template
 
-app.get("/index.ejs", function (req, res) {
+app.get("/index.html", function (req, res) {
    debug("serving the integration home page (generated from an EJS template)");
    res.send(compiled);
 });
