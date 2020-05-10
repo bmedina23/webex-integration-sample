@@ -226,7 +226,7 @@ function oauthFlowCompleted(access_token, res) {
 
       // Check the call is successful
       if (response.statusCode != 200) {
-         debug("could not retreive your details, /people/me returned: " + response.statusCode);
+         debug("could not retreive your details, /rooms returned: " + response.statusCode);
          res.send("<h1>OAuth Integration could not complete</h1><p>Sorry, could not retreive your Webex Teams account details. Try again...</p>");
          return;
       }
@@ -242,8 +242,8 @@ function oauthFlowCompleted(access_token, res) {
       //      "created": "2016-02-04T15:46:20.321Z"
       //    }
       const json = JSON.parse(body);
-      if ((!json) || (!json.displayName)) {
-         debug("could not parse Person details: bad json payload or could not find a displayName.");
+      if ((!json) || (!json.title)) {
+         debug("could not parse Person details: bad json payload or could not find a title.");
          res.send("<h1>OAuth Integration could not complete</h1><p>Sorry, could not retreive your Webx Teams account details. Try again...</p>");
          return;
       }
@@ -252,7 +252,7 @@ function oauthFlowCompleted(access_token, res) {
       //res.send("<h1>OAuth Integration example for Webex (static HTML)</h1><p>So happy to meet, " + json.displayName + " !</p>");
       // Current code leverages an EJS template:
       const str = read(join(__dirname, '/www/list-rooms.ejs'), 'utf8');
-      const compiled = ejs.compile(str)({ "displayName": json.displayName });
+      const compiled = ejs.compile(str)({ "title": json.title });
       res.send(compiled);
    });
 }
