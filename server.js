@@ -65,7 +65,7 @@ const initiateURL = "https://api.ciscospark.com/v1/authorize?"
 
 const read = require("fs").readFileSync;
 const join = require("path").join;
-const str = read(join(__dirname, '/www/index.ejs'), 'utf8');
+const str = read(join(__dirname, '/togofurther/list-rooms.ejs'), 'utf8');
 const ejs = require("ejs");
 const compiled = ejs.compile(str)({ "link": initiateURL }); // inject the link into the template
 
@@ -210,7 +210,7 @@ function oauthFlowCompleted(access_token, res) {
    // Retreive user name: GET https://api.ciscospark.com/v1/people/me
    const options = {
       method: 'GET',
-      url: 'https://api.ciscospark.com/v1/people/me',
+      url: 'https://api.ciscospark.com/v1/rooms',
       headers:
       {
          "authorization": "Bearer " + access_token
