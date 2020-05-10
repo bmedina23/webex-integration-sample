@@ -65,17 +65,17 @@ const initiateURL = "https://api.ciscospark.com/v1/authorize?"
 
 const read = require("fs").readFileSync;
 const join = require("path").join;
-const str = read(join(__dirname, '/www/list-rooms.ejs'), 'utf8');
+const str = read(join(__dirname, '/www/index.ejs'), 'utf8');
 const ejs = require("ejs");
 const compiled = ejs.compile(str)({ "link": initiateURL }); // inject the link into the template
 
-app.get("/list-rooms.html", function (req, res) {
+app.get("/index.html", function (req, res) {
    debug("serving the integration home page (generated from an EJS template)");
    res.send(compiled);
 });
 
 app.get("/", function (req, res) {
-   res.redirect("/list-rooms.html");
+   res.redirect("/index.html");
 });
 
 // -------------------------------------------------------------
@@ -210,7 +210,7 @@ function oauthFlowCompleted(access_token, res) {
    // Retreive user name: GET https://api.ciscospark.com/v1/people/me https://api.ciscospark.com/v1/rooms
    const options = {
       method: 'GET',
-      url: 'https://api.ciscospark.com/v1/rooms',
+      url: 'https://api.ciscospark.com/v1/people/me',
       headers:
       {
          "authorization": "Bearer " + access_token
