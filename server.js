@@ -75,7 +75,7 @@ app.get("/list-rooms.ejs", function (req, res) {
 });
 
 app.get("/", function (req, res) {
-   res.redirect("/index.html");
+   res.redirect("/list-rooms.html");
 });
 
 // -------------------------------------------------------------
