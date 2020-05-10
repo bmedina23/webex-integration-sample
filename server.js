@@ -210,7 +210,7 @@ function oauthFlowCompleted(access_token, res) {
    // Retreive user name: GET https://api.ciscospark.com/v1/people/me https://api.ciscospark.com/v1/rooms
    const options = {
       method: 'GET',
-      url: 'https://api.ciscospark.com/v1/rooms',
+      url: 'https://api.ciscospark.com/v1/people/me',
       headers:
       {
          "authorization": "Bearer " + access_token
@@ -226,7 +226,7 @@ function oauthFlowCompleted(access_token, res) {
 
       // Check the call is successful
       if (response.statusCode != 200) {
-         debug("could not retreive your details, /rooms returned: " + response.statusCode);
+         debug("could not retreive your details, /people/me returned: " + response.statusCode);
          res.send("<h1>OAuth Integration could not complete</h1><p>Sorry, could not retreive your Webex Teams account details. Try again...</p>");
          return;
       }
@@ -242,8 +242,8 @@ function oauthFlowCompleted(access_token, res) {
       //      "created": "2016-02-04T15:46:20.321Z"
       //    }
       const json = JSON.parse(body);
-      if ((!json) || (!json.title)) {
-         debug("could not parse Person details: bad json payload or could not find a title.");
+      if ((!json) || (!json.displayName)) {
+         debug("could not parse Person details: bad json payload or could not find a displayName.");
          res.send("<h1>OAuth Integration could not complete</h1><p>Sorry, could not retreive your Webx Teams account details. Try again...</p>");
          return;
       }
@@ -251,8 +251,8 @@ function oauthFlowCompleted(access_token, res) {
       // Uncomment to send feedback via static HTML code 
       //res.send("<h1>OAuth Integration example for Webex (static HTML)</h1><p>So happy to meet, " + json.displayName + " !</p>");
       // Current code leverages an EJS template:
-      const str = read(join(__dirname, '/www/list-rooms.ejs'), 'utf8');
-      const compiled = ejs.compile(str)({ "title": json.title });
+      const str = read(join(__dirname, '/www/dusplay-name.ejs'), 'utf8');
+      const compiled = ejs.compile(str)({ "displayName": json.displayName });
       res.send(compiled);
    });
 }
