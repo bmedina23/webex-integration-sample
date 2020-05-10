@@ -27,7 +27,7 @@ const app = express();
 //
 const clientId = process.env.CLIENT_ID || "C4d2626189e40ffbde5f8d2948650bda5b4261804986bb3a977b079d2af2d7d93";
 const clientSecret = process.env.CLIENT_SECRET || "81772d83ee75a5835d2b19a1c9e95b47bf6618a3a736e361c5324dc18e7183e8";
-const scopes = process.env.SCOPES || "spark:people_read"; // supported scopes are documented at: https://developer.webex.com/add-integration.html, the scopes separator is a space, example: "spark:people_read spark:rooms_read"
+const scopes = process.env.SCOPES || "spark:people_read spark:rooms_read"; // supported scopes are documented at: https://developer.webex.com/add-integration.html, the scopes separator is a space, example: "spark:people_read spark:rooms_read"
 
 // Compute redirect URI where your integration is waiting for Webex cloud to redirect and send the authorization code
 // unless provided via the REDIRECT_URI variable
@@ -65,17 +65,17 @@ const initiateURL = "https://api.ciscospark.com/v1/authorize?"
 
 const read = require("fs").readFileSync;
 const join = require("path").join;
-const str = read(join(__dirname, '/www/index.ejs'), 'utf8');
+const str = read(join(__dirname, '/www/list-rooms.ejs'), 'utf8');
 const ejs = require("ejs");
 const compiled = ejs.compile(str)({ "link": initiateURL }); // inject the link into the template
 
-app.get("/index.html", function (req, res) {
+app.get("/list-rooms.html", function (req, res) {
    debug("serving the integration home page (generated from an EJS template)");
    res.send(compiled);
 });
 
 app.get("/", function (req, res) {
-   res.redirect("/index.html");
+   res.redirect("/list-rooms.html");
 });
 
 // -------------------------------------------------------------
@@ -210,7 +210,7 @@ function oauthFlowCompleted(access_token, res) {
    // Retreive user name: GET https://api.ciscospark.com/v1/people/me https://api.ciscospark.com/v1/rooms
    const options = {
       method: 'GET',
-      url: 'https://api.ciscospark.com/v1/people/me',
+      url: 'https://api.ciscospark.com/v1/rooms',
       headers:
       {
          "authorization": "Bearer " + access_token
